@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>My Map</title>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+        }
+
+.content_div
+{
+border-top: 2px solid #725972;
+ border-right: 2px solid #725972;
+ border-bottom: 2px solid #725972;
+ border-left: 2px solid #725972;
+}
+
+        .map-canvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div id="map-canvas" class="map-canvas">
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script type="text/javascript">
+        var map;
+        function initialize() {
+            //CADM GEO-INFO
+            var CDAM_Latlng = new google.maps.LatLng(32.8844698,71.634792);
+            var CDAM_mapOptions = {
+                zoom: 6,
+                center: CDAM_Latlng
+            }
+
+            // the map :
+            var map = new google.maps.Map(document.getElementById('map-canvas'), CDAM_mapOptions);
+            google.maps.event.trigger(map, 'resize');
+            //markers icon :
+            var iconHome = "marker.png";
+            var otherpart = "marker.png";
+
+            //set markers :
+            var CDAM_marker = new google.maps.Marker({
+                animation: google.maps.Animation.DROP,
+                position: CDAM_Latlng,
+                map: map,
+                title: 'TKN-173',
+                icon: iconHome
+            });
+//<img src="teltonika.png" />
+            // info_window content_string
+            var CDAM_infoContent = '<div  style="max-width:100%">' +
+                                '<center><img src="teltonika.png" style="max-width:75%" />' +                               
+'<h6>TKN-173</h6><h6>جنڈ - ‏میانوالی روڈ، Pakistan</h6><center><table style="width:100%"><tr></tr></tr><tr><td>GPS Time</td><td>11/18/2016 3:03:56 PM</td></tr></table>'
+'</div>';
+
+            // info window CDAM:
+            var infowindowCDAM = new google.maps.InfoWindow({
+                content: CDAM_infoContent,
+				maxWidth: 200
+				
+            });
+
+            //Event Listener :
+
+            //CDAM info window :
+            google.maps.event.addListener(CDAM_marker, 'mouseover', function () {
+                infowindowCDAM.open(map, CDAM_marker);
+            });
+
+            google.maps.event.addListener(CDAM_marker, 'mouseout', function () {
+                infowindowCDAM.close(map, CDAM_marker);
+            });
+
+
+            //Effect Click :
+            google.maps.event.addListener(CDAM_marker, 'click', function toggleBounce() {
+                if (CDAM_marker.getAnimation() != null) {
+                    CDAM_marker.setAnimation(null);
+                } else {
+                    CDAM_marker.setAnimation(google.maps.Animation.BOUNCE);
+                }
+            });
+
+
+        }
+        // aplly domListener :
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+</body>
+</html>
